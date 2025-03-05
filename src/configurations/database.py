@@ -37,9 +37,7 @@ async def get_async_session() -> AsyncGenerator:
     global __session_factory
 
     if not __session_factory:
-        raise ValueError(
-            {"message": "You must call global_init() before using this method"}
-        )
+        raise ValueError({"message": "You must call global_init() before using this method"})
 
     session: AsyncSession = __session_factory()
 
@@ -48,10 +46,11 @@ async def get_async_session() -> AsyncGenerator:
         await session.commit()
     except Exception as e:
         logger.error("Raises exception: %s", e)
+        await session.rollback()
         raise e
     finally:
-        await session.rollback()
         await session.close()
+
 
 
 async def create_db_and_tables():
