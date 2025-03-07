@@ -23,7 +23,7 @@ async def create_seller(seller: IncomingSeller, session: AsyncSession = Depends(
         password=seller.password,
     )
     session.add(new_seller)
-    await session.flush()  # получение id
+    await session.flush()  # flush для получения id
     return new_seller
 
 # Получение списка всех продавцов (без поля password)
@@ -54,7 +54,7 @@ async def update_seller(seller_id: int, update_data: IncomingSellerUpdate, sessi
         seller.last_name = update_data.last_name
     if update_data.email is not None:
         seller.e_mail = update_data.email
-    await session.flush()
+    await session.flush()  # фиксируем изменения
     return seller
 
 # Удаление продавца вместе с его книгами
@@ -64,4 +64,5 @@ async def delete_seller(seller_id: int, session: AsyncSession = Depends(get_asyn
     if not seller:
         return Response(status_code=status.HTTP_404_NOT_FOUND)
     await session.delete(seller)
+    await session.flush()  # фиксируем удаление
     return Response(status_code=status.HTTP_204_NO_CONTENT)
