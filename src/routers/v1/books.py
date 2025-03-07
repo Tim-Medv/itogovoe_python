@@ -32,12 +32,11 @@ async def create_book(
 
     # это - бизнес логика. Обрабатываем данные, сохраняем, преобразуем и т.д.
     new_book = Book(
-        **{
-            "title": book.title,
-            "author": book.author,
-            "year": book.year,
-            "pages": book.pages,
-        }
+        title=book.title,
+        author=book.author,
+        year=book.year,
+        pages=book.pages,
+        seller_id=book.seller_id,
     )
 
     session.add(new_book)
